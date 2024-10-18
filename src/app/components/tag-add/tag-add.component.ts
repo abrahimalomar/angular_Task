@@ -22,9 +22,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
     NzIconModule],
   templateUrl: './tag-add.component.html',
   styleUrl: './tag-add.component.css',
-  // providers: [
-  //   { provide: NZ_ICONS, useValue: [UserOutline, PlusOutline, ArrowLeftOutline] }
-  // ]
+ 
 })
 export class TagAddComponent {
 

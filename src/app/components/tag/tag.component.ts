@@ -1,4 +1,4 @@
-import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TagService } from '../../service/tag.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,8 @@ import { RouterLink } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { DataItem } from '../../modal/Tags/DataItem';
+import { ColumnItem } from '../../modal/Tags/ColumnItem';
 
 @Component({
   selector: 'app-tag',
@@ -38,40 +40,28 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 })
 export class TagComponent implements OnInit {
     
-
-
-
-
-
 currentPage: number = 1;
 pageSize: number = 4;
 totalItems: number = 0;
 
-// Data storage
 listOfData: DataItem[] = [];
 filteredData: DataItem[] = [];
 
-// Subscription to API calls
+
 tagsSubscription!: Subscription;
 
-// Column configuration with sorting and filtering
 listOfColumns: ColumnItem[] = [
-  { name: 'Id', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Id - b.Id, listOfFilter: [], filterFn: (filter: any, item: DataItem) => filter.includes(item.Id) },
-  { name: 'Name', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Name.localeCompare(b.Name), listOfFilter: [], filterFn: (filter: any, item: DataItem) => filter.includes(item.Name) },
-  { name: 'ObjectType', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.ObjectType - b.ObjectType, listOfFilter: [], filterFn: (filter: any, item: DataItem) => filter.includes(item.ObjectType) }
+  { name: 'Id', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Id - b.Id,  filterFn: (filter: any, item: DataItem) => filter.includes(item.Id) },
+  { name: 'Name', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Name.localeCompare(b.Name),  filterFn: (filter: any, item: DataItem) => filter.includes(item.Name) },
+  { name: 'ObjectType', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.ObjectType - b.ObjectType,filterFn: (filter: any, item: DataItem) => filter.includes(item.ObjectType) }
 ];
-  // listOfColumns: ColumnItem[] = [
-  //   { name: 'Id', sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Id - b.Id, listOfFilter: [], filterFn: (filter, item) => true  },
-  //   { name: 'Name', sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Name.localeCompare(b.Name), listOfFilter: [], filterFn: null },
-  //   { name: 'ObjectType', sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.ObjectType - b.ObjectType, listOfFilter: [], filterFn: null }
-  // ];
 
-// Front-end filter options
+
 idOptions: number[] = [];
 nameOptions: string[] = [];
 objectTypeOptions: number[] = [];
 
-// Front-end filter selections
+
 selectedId?: number;
 selectedName?: string;
 selectedObjectType?: number;
@@ -86,7 +76,7 @@ ngOnInit(): void {
   this.getAll(); 
 }
 
-// Fetch data from API with selected columns
+
 getAll(): void {
   const selectedColumns = this.listOfColumns
     .filter(col => col.checked)
@@ -103,8 +93,8 @@ getAll(): void {
         this.listOfData = response.value;
         this.totalItems = response['@odata.count'];
         this.filteredData = [...this.listOfData];
-        this.setFilterOptions(); // Set options for front-end filters
-        this.applyFilter(); // Apply front-end filtering
+        this.setFilterOptions();
+        this.applyFilter(); 
       },
       error: (error) => {
         console.error('Error fetching tags:', error);
@@ -112,41 +102,23 @@ getAll(): void {
     });
 }
 
-// Apply filtering from the column header filters
-applyHeaderFilter(filter: any[], column: ColumnItem): void {
-  column.listOfFilter = filter; // تحديث فلاتر العمود
-
-  this.filteredData = this.listOfData.filter(item => {
-    // تحقق مما إذا كانت filterFn موجودة
-    if (column.filterFn) {
-      return (
-        column.filterFn(filter, item) &&
-        (this.selectedId ? item.Id === this.selectedId : true) &&
-        (this.selectedName ? item.Name === this.selectedName : true) &&
-        (this.selectedObjectType ? item.ObjectType === this.selectedObjectType : true)
-      );
-    }
-    // إذا كانت filterFn null، قم بإرجاع true أو أي منطق مناسب آخر
-    return true; // يمكن تعديل هذا بناءً على منطق تطبيقك
-  });
-  this.applySort(column)
-}
 
 applySort(column: ColumnItem): void {
-  // التحقق إذا كان sortFn موجودًا وغير null
   if (column.sortFn) {
     if (column.sortOrder === 'ascend') {
       this.filteredData.sort(column.sortFn);
     } else if (column.sortOrder === 'descend') {
-      this.filteredData.sort((a, b) => column.sortFn(b, a)); // عكس الترتيب
+      this.filteredData.sort((a, b) => column.sortFn(b, a));
     }
   }
 }
-onSortChange(column: ColumnItem): void {
-  column.sortOrder = column.sortOrder === 'ascend' ? 'descend' : 'ascend'; // تغيير حالة الترتيب
-  this.applySort(column); // تطبيق الترتيب الجديد
+sortChange(column: ColumnItem): void {
+  console.log('column ',column);
+  
+  column.sortOrder = column.sortOrder === 'ascend' ? 'descend' : 'ascend';
+  this.applySort(column); 
 }
-// Front-end filtering logic
+// front End filter list
 applyFilter(): void {
   this.filteredData = this.listOfData.filter(item =>
     (this.selectedId ? item.Id === this.selectedId : true) &&
@@ -155,31 +127,30 @@ applyFilter(): void {
   );
 }
 
-// Set filter options for front-end filters
 setFilterOptions(): void {
   this.idOptions = Array.from(new Set(this.listOfData.map(data => data.Id)));
   this.nameOptions = Array.from(new Set(this.listOfData.map(data => data.Name)));
   this.objectTypeOptions = Array.from(new Set(this.listOfData.map(data => data.ObjectType)));
 }
 
-// Trigger column visibility and re-fetch data
-onColumnSelectionChange(): void {
-  this.getAll(); // Update data based on selected columns
+
+columnSelectChange(): void {
+  this.getAll(); 
 }
 
-// Pagination handler
+
 onPageChange(page: number): void {
   this.currentPage = page;
   this.getAll();
 }
 
-// Reset filters and re-fetch all columns
+
 resetFilters(): void {
   this.selectedId = undefined;
   this.selectedName = undefined;
   this.selectedObjectType = undefined;
-  this.listOfColumns.forEach(col => (col.checked = true)); // Reset all columns to checked
-  this.getAll(); // Re-fetch data
+  this.listOfColumns.forEach(col => (col.checked = true)); 
+  this.getAll();
 }
 
 ngOnDestroy(): void {
@@ -214,187 +185,4 @@ deleteTag(tagId: number): void {
 
 }
 
-// Define the data structure
-interface DataItem {
-Id: number;
-Name: string;
-ObjectType: number;
-}
-interface ColumnItem {
-  name: string;
-  checked: boolean;
-  sortOrder: 'ascend' | 'descend' | null;
-  sortFn: ((a: DataItem, b: DataItem) => number);
-  listOfFilter: any[];
-  filterFn: ((filter: any[], item: DataItem) => boolean) | null; 
- 
-}
-
-
-
-// interface ColumnItem {
-// name: string;
-// checked: boolean;
-// sortOrder: 'ascend' | 'descend' | null;
-// sortFn: ((a: DataItem, b: DataItem) => number) | null;
-// listOfFilter: any[];
-// filterFn: (filter: any[], item: DataItem) => boolean;
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// selectedColumns: string[] = ['Id', 'Name', 'ObjectType'];
-// tagsSubscription!: Subscription
-// // pgnation
-// currentPage: number = 1;
-// pageSize: number = 4;
-// totalItems: number = 0;
-
-// //filter
-// listOfData: DataItem[] = [];
-// filteredData: DataItem[] = [];
-
-
-// idOptions: number[] = [];
-// nameOptions: string[] = [];
-// objectTypeOptions: number[] = [];
-
-
-// selectedId?: number;
-// selectedName?: string;
-// selectedObjectType?: number;
-
-// listOfColumns: ColumnItem[] = [
-//   { name: 'Id', sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Id - b.Id, listOfFilter: [], filterFn: null },
-//   { name: 'Name', sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.Name.localeCompare(b.Name), listOfFilter: [], filterFn: null },
-//   { name: 'ObjectType', sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.ObjectType - b.ObjectType, listOfFilter: [], filterFn: null }
-// ];
-
-
-
-// constructor(private tagService: TagService,
-//   private modal: NzModalService,
-//   private message: NzMessageService
-// ) {}
-
-// ngOnInit(): void {
-//   this.getAll(); 
-// }
-
-
-// getAll(): void {
-//   const skip = (this.currentPage - 1) * this.pageSize;
-//   const top = this.pageSize;
-
-//  this.tagsSubscription= this.tagService.getAllTags(skip, top,this.selectedColumns).subscribe({
-//     next: (response) => {
-//       this.listOfData = response.value.map(tag => ({
-//         Id: tag.Id,
-//         Name: tag.Name,
-//         ObjectType: tag.ObjectType
-//       }));
-//       this.totalItems = response['@odata.count'];
-//       this.filteredData = [...this.listOfData];
-//       this.setFilterOptions();
-//     },
-//     error: (error) => {
-//       console.log('Error:', error);
-//     }
-//   });
-// }
-
-
-// setFilterOptions(): void {
-//   this.idOptions = Array.from(new Set(this.listOfData.map(data => data.Id)));
-//   this.nameOptions = Array.from(new Set(this.listOfData.map(data => data.Name)));
-//   this.objectTypeOptions = Array.from(new Set(this.listOfData.map(data => data.ObjectType)));
-// }
-
-
-// applyFilter(): void {
-//   this.filteredData = this.listOfData.filter(item => 
-//     (this.selectedId ? item.Id === this.selectedId : true) &&
-//     (this.selectedName ? item.Name === this.selectedName : true) &&
-//     (this.selectedObjectType ? item.ObjectType === this.selectedObjectType : true)
-//   );
-// }
-
-
-//   resetFilters(): void {
-//     this.selectedId = undefined;
-//     this.selectedName = undefined;
-//     this.selectedObjectType = undefined;
-//     this.selectedColumns = ['Id', 'Name', 'ObjectType'];
-//     this.applyFilter();
-//   }
-
-// onPageChange(page: number): void {
-//   this.currentPage = page;
-//   this.getAll();
-// }
-
-// confirmDelete(tagId: number, tagName: string): void {
-//   this.modal.confirm({
-//     nzTitle: 'Are you sure you want to delete this tag?',
-//     nzContent: `<b style="color: red;">This action cannot be undone for tag: ${tagName}!</b>`,
-//     nzOkText: 'Yes',
-//     nzOkType: 'primary',
-//     nzOnOk: () => this.deleteTag(tagId),
-//     nzCancelText: 'No'
-//   });
-// }
-
-// deleteTag(tagId: number): void {
-//   this.tagService.delete(tagId).subscribe({
-//     next: () => {
-//       this.getAll();
-     
-//       this.message.success('deleted')
-//     },
-//     error: (error) => {
-//       console.error('Error deleting tag:', error);
-//       this.message.error('Error deleting tag')
-//     }
-//   });
-// }
-// ngOnDestroy() {
-//   if (this.tagsSubscription) {
-//     this.tagsSubscription.unsubscribe();
-//   }
-// }
-
-
-
-
-// }
-
-// interface DataItem {
-// Id: number;
-// Name: string;
-// ObjectType: number;
-// }
-
-// interface ColumnItem {
-// name: string;
-// sortOrder: 'ascend' | 'descend' | null;
-// sortFn: ((a: DataItem, b: DataItem) => number) | null;
-// listOfFilter: { text: string; value: any }[];
-// filterFn: ((list: string[], item: DataItem) => boolean) | null;
-
-// }
 

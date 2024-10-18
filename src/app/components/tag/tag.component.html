@@ -1,205 +1,41 @@
-<!-- 
 
 <div class="header-container">
-<div class="filters">
-
-  <button nz-button (click)="resetFilters()">Clear filters</button>
-  <nz-select [(ngModel)]="selectedId" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Id">
-    @for (option of idOptions; track $index) {
-    <nz-option  [nzValue]="option" [nzLabel]="option"></nz-option>
-    }
-  </nz-select>
+  <div class="filters">
   
-  <nz-select [(ngModel)]="selectedName" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Name">
-    @for (option of nameOptions; track $index) {
-    <nz-option  [nzValue]="option" [nzLabel]="option"></nz-option>
-  }
-  </nz-select>
-  
-  <nz-select [(ngModel)]="selectedObjectType" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by ObjectType">
-    @for (option of objectTypeOptions; track $index) {
-    <nz-option  [nzValue]="option" [nzLabel]="option"></nz-option>
-    }
-  </nz-select>
-  </div>
-
-  <button nz-button nzType="primary" [routerLink]="['/dashboard/tags/add']">
-    <i nz-icon nzType="plus" style="margin-right: 4px;"></i> Add New Tag
-  </button>
-</div>
-
-
-
-
-<nz-table 
-  #filterTable 
-  [nzData]="filteredData" 
-  nzTableLayout="fixed" 
-  [nzFrontPagination]="false">
-  <thead>
-    <tr>
-      <th *ngFor="let column of listOfColumns" 
-          [(nzSortOrder)]="column.sortOrder"
-          [nzSortFn]="column.sortFn">
-        {{ column.name }}
-      </th>
-      <th>ac</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (tag of filterTable.data; track $index) {
-    <tr >
-      <td>{{ tag.Id }}</td>
-      <td>{{ tag.Name }}</td>
-      <td>{{ tag.ObjectType }}</td>
-      <td>
-        <button nz-button nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
-          Actions <span nz-icon nzType="down"></span>
-        </button>
-        <nz-dropdown-menu #menu="nzDropdownMenu">
-          <ul nz-menu>
-            <li nz-menu-item>
-              <button nz-button nzType="link" [routerLink]="['/dashboard/tags/edit', tag.Id]">
-                <i nz-icon nzType="edit"></i> Edit
-              </button>
-            </li>
-            <li nz-menu-item>
-              <button nz-button nzType="link" (click)="confirmDelete(tag.Id, tag.Name)">
-                <i nz-icon nzType="delete"></i> Delete
-              </button>
-            </li>
-          </ul>
-        </nz-dropdown-menu>
-      </td>
-    </tr>
-  }
-  </tbody>
-</nz-table>
-
-<nz-pagination 
-  [(nzPageIndex)]="currentPage" 
-  [nzTotal]="totalItems" 
-  [nzPageSize]="pageSize" 
-  (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination>  -->
-
-
-
-
-
-
-<!-- <div class="header-container">
-  <div class="filters">
-    <button nz-button (click)="resetFilters()">Clear filters</button>
-   
- 
-    
-    <nz-select [(ngModel)]="selectedId" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Id">
-     @for (option of idOptions; track $index) {
-      <ng-container>
-        <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
-      </ng-container>
-    }
-    </nz-select>
-    
-    <nz-select [(ngModel)]="selectedName" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Name">
-      @for (option of nameOptions; track $index) {
-      <ng-container>
-        <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
-      </ng-container>
-    }
-    </nz-select>
-    
-    <nz-select [(ngModel)]="selectedObjectType" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by ObjectType">
-      @for (option of objectTypeOptions; track $index) {
-      <ng-container >
-        <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
-      </ng-container>
-    }
-    </nz-select>
-  </div>
-
-  <button nz-button nzType="primary" [routerLink]="['/dashboard/tags/add']">
-    <i nz-icon nzType="plus" style="margin-right: 4px;"></i> Add New Tag
-  </button>
-</div>
-
-<nz-table 
-  #filterTable 
-  [nzData]="filteredData" 
-  nzTableLayout="fixed" 
-  [nzFrontPagination]="false">
-  <thead>
-    <tr>
-      <th *ngFor="let column of listOfColumns" 
-        
-          [(nzSortOrder)]="column.sortOrder"
-          [nzSortFn]="column.sortFn">
-        {{ column.name }}
-      </th>
-      <th *ngIf="selectedColumns.includes('Actions')">Actions</th> 
-    </tr>
-  </thead>
-  <tbody>
-    @for (tag of filterTable.data; track $index) {
-    <ng-container>
-      <tr>
-        <td *ngIf="selectedColumns.includes('Id')">{{ tag.Id }}</td>
-        <td *ngIf="selectedColumns.includes('Name')">{{ tag.Name }}</td>
-        <td *ngIf="selectedColumns.includes('ObjectType')">{{ tag.ObjectType }}</td>
-        <td *ngIf="selectedColumns.includes('Actions')">
-          <button nz-button nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
-            Actions <span nz-icon nzType="down"></span>
-          </button>
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item>
-                <button nz-button nzType="link" [routerLink]="['/dashboard/tags/edit', tag.Id]">
-                  <i nz-icon nzType="edit"></i> Edit
-                </button>
-              </li>
-              <li nz-menu-item>
-                <button nz-button nzType="link" (click)="confirmDelete(tag.Id, tag.Name)">
-                  <i nz-icon nzType="delete"></i> Delete
-                </button>
-              </li>
-            </ul>
-          </nz-dropdown-menu>
-        </td>
-      </tr>
-    </ng-container>
-  }
-  </tbody>
-</nz-table>
-
-<nz-pagination 
-  [(nzPageIndex)]="currentPage" 
-  [nzTotal]="totalItems" 
-  [nzPageSize]="pageSize" 
-  (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination> -->
-
-
-
-
-
-<!-- <div class="header-container">
-  <div class="filters">
- 
     <button nz-button nz-dropdown [nzDropdownMenu]="menu">
       <i nz-icon nzType="filter"></i> Select Columns
     </button>
 
-
     <nz-dropdown-menu #menu="nzDropdownMenu">
       <ul nz-menu>
-        <li nz-menu-item *ngFor="let column of listOfColumns">
-          <label nz-checkbox [(ngModel)]="column.checked" (ngModelChange)="onColumnSelectionChange()">
+        @for (column of listOfColumns; track $index) {
+        <li nz-menu-item>
+          <label nz-checkbox [(ngModel)]="column.checked" (ngModelChange)="columnSelectChange()">
             {{ column.name }}
           </label>
         </li>
+      }
       </ul>
     </nz-dropdown-menu>
+
+    
+    <nz-select [(ngModel)]="selectedId" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Id">
+      @for (option of idOptions; track $index) {
+      <nz-option  [nzValue]="option" [nzLabel]="option"></nz-option>
+      }
+    </nz-select>
+
+    <nz-select [(ngModel)]="selectedName" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Name">
+     @for (option of nameOptions; track $index) {
+      <nz-option  [nzValue]="option" [nzLabel]="option"></nz-option>
+     }
+    </nz-select>
+
+    <nz-select [(ngModel)]="selectedObjectType" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by ObjectType">
+     @for (option of objectTypeOptions; track $index) {
+      <nz-option [nzValue]="option" [nzLabel]="option"></nz-option>
+     }
+    </nz-select>
 
     <button nz-button (click)="resetFilters()">Reset Filters</button>
   </div>
@@ -210,188 +46,37 @@
   </button>
 </div>
 
-<nz-table [nzData]="filteredData" nzTableLayout="fixed">
-  <thead>
-    <tr>
-      <ng-container *ngFor="let column of listOfColumns">
-        <th *ngIf="column.checked">{{ column.name }}</th>
-      </ng-container>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of filteredData">
-      <td *ngIf="listOfColumns[0].checked">{{ item.Id }}</td>
-      <td *ngIf="listOfColumns[1].checked">{{ item.Name }}</td>
-      <td *ngIf="listOfColumns[2].checked">{{ item.ObjectType }}</td>
-    </tr>
-  </tbody>
-</nz-table>
-
-
-<nz-pagination
-  [(nzPageIndex)]="currentPage"
-  [nzTotal]="totalItems"
-  [nzPageSize]="pageSize"
-  (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
-
-<div class="header-container">
-  <div class="filters">
-    
-    <button nz-button nz-dropdown [nzDropdownMenu]="menu">
-      <i nz-icon nzType="filter"></i> Select Columns
-    </button>
-
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        <li nz-menu-item *ngFor="let column of listOfColumns">
-          <label nz-checkbox [(ngModel)]="column.checked" (ngModelChange)="onColumnSelectionChange()">
-            {{ column.name }}
-          </label>
-        </li>
-      </ul>
-    </nz-dropdown-menu>
-
- 
-    <nz-select [(ngModel)]="selectedId" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Id">
-      <nz-option *ngFor="let option of idOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
-    </nz-select>
-
-    <nz-select [(ngModel)]="selectedName" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Name">
-      <nz-option *ngFor="let option of nameOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
-    </nz-select>
-
-    <nz-select [(ngModel)]="selectedObjectType" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by ObjectType">
-      <nz-option *ngFor="let option of objectTypeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
-    </nz-select>
-
-
-    <button nz-button (click)="resetFilters()">Reset Filters</button>
-  </div>
-
-
-  <button nz-button nzType="primary" [routerLink]="['/dashboard/tags/add']">
-    <i nz-icon nzType="plus" style="margin-right: 4px;"></i> Add New Tag
-  </button>
-</div>
-
-
-<nz-table [nzData]="filteredData" nzTableLayout="fixed">
-  <thead>
-    <tr>
-      <ng-container *ngFor="let column of listOfColumns">
-        <th *ngIf="column.checked">{{ column.name }}</th>
-      </ng-container>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let item of filteredData">
-      <td *ngIf="listOfColumns[0].checked">{{ item.Id }}</td>
-      <td *ngIf="listOfColumns[1].checked">{{ item.Name }}</td>
-      <td *ngIf="listOfColumns[2].checked">{{ item.ObjectType }}</td>
-    </tr>
-  </tbody>
-</nz-table>
-
-
-<nz-pagination
-  [(nzPageIndex)]="currentPage"
-  [nzTotal]="totalItems"
-  [nzPageSize]="pageSize"
-  (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div class="header-container">
-  <div class="filters">
-    <!-- Dynamic Column Selection -->
-    <button nz-button nz-dropdown [nzDropdownMenu]="menu">
-      <i nz-icon nzType="filter"></i> Select Columns
-    </button>
-
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-        <li nz-menu-item *ngFor="let column of listOfColumns">
-          <label nz-checkbox [(ngModel)]="column.checked" (ngModelChange)="onColumnSelectionChange()">
-            {{ column.name }}
-          </label>
-        </li>
-      </ul>
-    </nz-dropdown-menu>
-
-    <!-- Front-end filters for Id, Name, and ObjectType -->
-    <nz-select [(ngModel)]="selectedId" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Id">
-      <nz-option *ngFor="let option of idOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
-    </nz-select>
-
-    <nz-select [(ngModel)]="selectedName" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by Name">
-      <nz-option *ngFor="let option of nameOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
-    </nz-select>
-
-    <nz-select [(ngModel)]="selectedObjectType" (ngModelChange)="applyFilter()" nzAllowClear nzPlaceHolder="Filter by ObjectType">
-      <nz-option *ngFor="let option of objectTypeOptions" [nzValue]="option" [nzLabel]="option"></nz-option>
-    </nz-select>
-
-    <button nz-button (click)="resetFilters()">Reset Filters</button>
-  </div>
-
-  <!-- Add New Tag Button -->
-  <button nz-button nzType="primary" [routerLink]="['/dashboard/tags/add']">
-    <i nz-icon nzType="plus" style="margin-right: 4px;"></i> Add New Tag
-  </button>
-</div>
-
-<!-- Data Table with sorting and filtering for each column -->
 <nz-table [nzData]="filteredData" nzTableLayout="fixed" [nzFrontPagination]="false">
   <thead>
     <tr>
-      <ng-container *ngFor="let column of listOfColumns">
-        <th *ngIf="column.checked"
+      @for (column of listOfColumns; track $index) {
+      <ng-container>
+        @if (column.checked) {
+        <th
             [(nzSortOrder)]="column.sortOrder"
-            (click)="onSortChange(column)"
+            (click)="sortChange(column)"
             [nzSortFn]="column.sortFn"
-            [nzFilters]="column.listOfFilter"
-            (nzFilterChange)="applyHeaderFilter($event, column)">
+         >
           {{ column.name }}
         </th>
+      }
       </ng-container>
-      <th>Actions</th> <!-- Static column for actions -->
+    }
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of filteredData">
-      <td *ngIf="listOfColumns[0].checked">{{ item.Id }}</td>
-      <td *ngIf="listOfColumns[1].checked">{{ item.Name }}</td>
-      <td *ngIf="listOfColumns[2].checked">{{ item.ObjectType }}</td>
+    @for (item of filteredData; track $index) {
+    <tr>
+      @if(listOfColumns[0].checked){
+      <td>{{ item.Id }}</td>
+      }
+      @if(listOfColumns[1].checked){
+      <td>{{ item.Name }}</td>
+      }
+      @if (listOfColumns[2].checked) {
+      <td>{{ item.ObjectType }}</td>
+      }
       <td>
         <button nz-button nz-dropdown [nzDropdownMenu]="menu" nzPlacement="bottomRight">
           Actions <i nz-icon nzType="down"></i>
@@ -412,6 +97,7 @@
         </nz-dropdown-menu>
       </td>
     </tr>
+  }
   </tbody>
 </nz-table>
 

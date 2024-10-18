@@ -48,6 +48,7 @@ export class AuthService {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     if (this.refreshTimeout) clearTimeout(this.refreshTimeout);
+    console.log("user logout");
   }
 
 
@@ -61,8 +62,10 @@ export class AuthService {
     const refreshToken = localStorage.getItem("refreshToken");
     if (!refreshToken) return throwError("Refresh token not available");
 
+    console.log("request refresh ");
     return this.http.post<LoginResponse>(this.refreshUrl, { refreshToken }).pipe(
       tap(response => {
+        console.log("refresh tokn response", response);
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
         this.scheduleTokenRefresh(response.token);
@@ -77,10 +80,12 @@ export class AuthService {
  
   private scheduleTokenRefresh(token: string): void {
     const expirationDate = this.getTokenExpirationDate(token);
+    console.log('expir ',expirationDate);
+    
     if (!expirationDate) return;
 
-    const expiresIn = expirationDate.getTime() - Date.now() - 2 * 60 * 1000; // الوقت المتبقي مع خصم دقيقتين
-
+    const expiresIn = expirationDate.getTime() - Date.now() - 2 * 60 * 1000; 
+    console.log('token expires :', expiresIn);
     if (this.refreshTimeout) clearTimeout(this.refreshTimeout);
 
     if (expiresIn > 0) {

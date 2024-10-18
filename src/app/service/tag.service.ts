@@ -12,28 +12,10 @@ export class TagService {
 
   constructor(private http:HttpClient) { }
   getAllTags(skip: number, top: number, select: string): Observable<any> {
-    const url = `${environment.urlApi}?select=${select}&count=true&skip=${skip}&top=${top}`;
     const apiurl= `${environment.urlApi}/data-api/Tag?select=${select}&count=true&skip=${skip}&top=${top}`
     return this.http.get<any>(apiurl);
   }
-  // getAllTags(skip: number = 0, top: number = 5,selectedColumns: string[]=[]): Observable<TagResponse> {
-  //   // const selectedColumnsString = selectedColumns.join(','); 
-  //   //return this.http.get<TagResponse>(`${environment.urlApi}/data-api/Tag?select=Id,Name,ObjectType&count=true&skip=${skip}&top=${top}`);
-
-  //   return this.http.get<TagResponse>(
-  //     `${environment.urlApi}/data-api/Tag?select=${selectedColumns}&count=true&skip=${skip}&top=${top}`
-  //   );
-  //  // return this.http.get<TagResponse>(`${environment.urlApi}/data-api/Tag?select=Id,Name,ObjectType&count=true&skip=${skip}&top=${top}`);
-  // }
-
-
-  // getAlltag():Observable<TagResponse>{
-
-  //   return this.http.get<TagResponse>(`${environment.urlApi}/data-api/Tag?select=Id,Name,ObjectType&count=true&skip=0&top=100`);
-  // }
-  // getAlltag(skip: number, limit: number): Observable<TagResponse> {
-  //   return this.http.get<TagResponse>(`/api/tags?$skip=${skip}&$top=${limit}`);
-  // }
+ 
   
 
   delete(tagId: number): Observable<any> {
@@ -43,10 +25,10 @@ export class TagService {
     return this.http.get<Tag>(`${environment.urlApi}/data-api/Tag(${tagId})`);
   }
   update(tag: Tag): Observable<any> {
-    return this.http.put(`${environment.urlApi}/data-api/Tag(${tag.Id})`, tag); // تحديث السجل الموجود
+    return this.http.put(`${environment.urlApi}/data-api/Tag(${tag.Id})`, tag); 
   }
 
   create(tag: Tag): Observable<Tag> {
-    return this.http.post<Tag>(`${environment.urlApi}/data-api/Tag`, tag); // إنشاء سجل جديد
+    return this.http.post<Tag>(`${environment.urlApi}/data-api/Tag`, tag);
   }
 }

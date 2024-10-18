@@ -1,42 +1,11 @@
-<!-- 
-<router-outlet /> -->
 
+<!-- <nz-spin [nzSpinning]="loadingService.loading$ | async">
 
-<nz-spin [nzSpinning]="loadingService.loading$ | async">
+  </nz-spin> -->
+  
+  <!-- <router-outlet /> -->
+
+  <nz-spin [nzSpinning]="isLoading">
     <router-outlet></router-outlet>
   </nz-spin>
   
-  
-
-<!--  
-<nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed"  [nzFrontPagination]="false">
-    <thead>
-      <tr>
-        <th *ngFor="let column of listOfColumns" 
-            [(nzSortOrder)]="column.sortOrder"
-            [nzSortFn]="column.sortFn"
-            [nzFilters]="column.listOfFilter"
-            [nzFilterFn]="column.filterFn">
-          {{ column.name }}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let data of filterTable.data">
-        <td>{{ data.Id }}</td>
-        <td>{{ data.Name }}</td>
-        <td>{{ data.ObjectType }}</td>
-      </tr>
-    </tbody>
-</nz-table>
-
-
-<nz-pagination 
-    [(nzPageIndex)]="currentPage" 
-    [nzTotal]="totalItems" 
-    [nzPageSize]="pageSize" 
-    (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination>  -->
-
-
-
