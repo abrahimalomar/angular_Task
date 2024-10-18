@@ -1,0 +1,33 @@
+<nz-card nzTitle="Add New Tag" nzBordered="false" [nzBodyStyle]="{ padding: '24px' }"
+  style="width: 450px; margin: auto;">
+  <div class="card-header">
+    Add Tag
+  </div>
+  <form [formGroup]="addForm" (ngSubmit)="addTag()">
+    <div style="margin-bottom: 24px;">
+      <label for="name" class="label-style">Name</label>
+      <nz-input-group nzSize="large">
+        <span nz-input-group-addon>
+          <i nz-icon nzType="user" nzTheme="outline"></i>
+        </span>
+        <input id="name" formControlName="Name" nz-input placeholder="Enter name" 
+        required 
+        [ngClass]="{ 'is-invalid': isNameInvalidAndTouched }"/>
+      </nz-input-group>
+      @if(isNameInvalidAndTouched){
+        <div class="error">
+          <span>Name is required</span>
+        </div>
+      }
+    </div>
+
+    <button nz-button nzType="primary" nzSize="large" nzBlock type="submit" [disabled]="addForm.invalid"
+      class="submit-button">
+      <i nz-icon nzType="plus" nzTheme="outline"></i> Add Tag
+    </button>
+
+    <button nz-button nzType="default" nzSize="large" nzBlock (click)="goBack()" class="back-button">
+      <i nz-icon nzType="arrow-left"  class="back-button-icon"></i> Back to Main Menu
+    </button>
+  </form>
+</nz-card>

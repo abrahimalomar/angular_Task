@@ -1,0 +1,67 @@
+<!-- Button to trigger the dropdown -->
+<button nz-button nz-dropdown [nzDropdownMenu]="menu">
+  <i nz-icon nzType="filter"></i>
+  Filter Options
+</button>
+
+<!-- Dropdown Menu -->
+<nz-dropdown-menu #menu="nzDropdownMenu">
+  <ul nz-menu>
+    <li nz-menu-item *ngFor="let item of items">
+      <label nz-checkbox [(ngModel)]="item.checked">{{ item.label }}</label>
+    </li>
+  </ul>
+</nz-dropdown-menu>
+
+<!-- Display Selected Items -->
+<p>Selected: {{ selectedItems() | json }}</p>
+
+ 
+ 
+ 
+ <!-- <nz-table
+ngSkipHydration
+#basicTable [nzData]="tags" 
+[nzPageSize]="pageSize" [nzTotal]="total" [(nzPageIndex)]="currentPage">
+    <thead>
+      <tr>
+        <th nzWidth="25%">Name</th>
+        <th nzWidth="25%">Age</th>
+        <th nzWidth="25%">Address</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of basicTable.data">
+        <td>{{ entry.Id }}:{{total}}</td>
+        <td>{{ entry.ObjectType }}</td>
+        <td>{{ entry.Name }}</td>
+       
+      </tr>
+    </tbody>
+  </nz-table>
+  
+  <button nz-button (click)="addEntry()">Add Entry</button> -->
+   
+   <!-- <nz-table
+   [nzData]="tags"
+   [nzPageSize]="pageSize"
+   [nzTotal]="total"
+   [(nzPageIndex)]="currentPage"
+   (nzPageIndexChange)="onPageChange($event)">
+     <thead>
+       <tr>
+         <th nzWidth="25%">ID</th>
+         <th nzWidth="25%">Object Type</th>
+         <th nzWidth="25%">Name</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let entry of tags">
+         <td>{{ entry.Id }}</td>
+         <td>{{ entry.ObjectType }}</td>
+         <td>{{ entry.Name }}</td>
+       </tr>
+     </tbody>
+ </nz-table>
+  -->

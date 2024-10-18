@@ -1,0 +1,60 @@
+<nz-card nzTitle="Edit Tag" nzBordered="false" [nzBodyStyle]="{ padding: '24px' }"
+ style="width: 450px; margin: auto; border-radius: 8px;">
+  <div class="card-header">
+    Edit Tag
+  </div>  
+  <form [formGroup]="editForm" (ngSubmit)="updateTag()" style="margin-top: 16px;">
+   
+    <div>
+      <label for="name" class="label-style ">Name</label>
+      <nz-input-group nzSize="large">
+        <span nz-input-group-addon>
+          <i nz-icon nzType="user" nzTheme="outline"></i>
+        </span>
+        <input id="name" formControlName="Name" nz-input placeholder="Enter name"
+               required [ngClass]="{ 'is-invalid': isNameInvalidAndTouched }" />
+      </nz-input-group>
+    
+      @if(isNameInvalidAndTouched){
+        <div class="error">
+          <span>Name is required</span>
+        </div>
+      }
+    </div>
+    
+
+      
+
+    <div style="margin-bottom: 24px;">
+      <label for="objectType" class="label-style">Object Type</label>
+      <nz-input-group nzSize="large">
+        <span nz-input-group-addon>
+          <i nz-icon nzType="appstore" nzTheme="outline"></i>
+        </span>
+        <input id="objectType" formControlName="ObjectType"
+               nz-input placeholder="Enter object type" required 
+               [ngClass]="isObjectTypeInvalidAndTouched ? 'is-invalid' : ''" />
+      </nz-input-group>
+   
+      @if(isObjectTypeInvalidAndTouched){
+      <div  class="error">
+        <span>Object Type is required</span>
+      </div>
+    }
+    </div>
+    
+    <button nz-button nzType="primary" nzSize="large" nzBlock type="submit"
+      class="submit-button">
+      <i nz-icon nzType="save" nzTheme="outline"></i> Update Tag
+    </button>
+
+ 
+    <button nz-button nzType="default" nzSize="large" nzBlock (click)="goBack()"
+    class="back-button">
+      <i nz-icon nzType="arrow-left" class="back-button-icon"></i> Back to Main Menu
+    </button>
+  </form>
+</nz-card>
+
+
+

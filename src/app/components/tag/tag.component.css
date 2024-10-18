@@ -1,0 +1,20 @@
+.custom-alert {
+    text-align: center; 
+    font-size: 100px; 
+    font-weight: bold;
+    
+  }
+
+.nz-modal-confirm-btns .ant-btn-primary {
+  background-color: red !important;
+  border-color: red !important;
+}
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f0f2f5;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 12px;
+}

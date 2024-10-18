@@ -1,0 +1,45 @@
+/* styles.css */
+
+nz-layout {
+    height: 100vh;
+}
+
+nz-sider {
+    background: #fff;
+}
+
+.nz-sider-content {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.nz-sider-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nz-header {
+    background: #fff;
+    padding: 0;
+}
+
+nz-header h2 {
+    margin-left: 16px;
+}
+
+nz-content {
+    margin: 16px;
+}
+
+nz-content div {
+    padding: 24px;
+    background: #fff;
+    min-height: 700px;
+}
+
+nz-footer {
+    text-align: center;
+}

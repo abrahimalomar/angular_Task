@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+.error {
+  color: red;
+  font-size: 12px;
+  text-align: start;
+}
+
+.is-invalid {
+  border: 1px solid red; 
+  border-radius: 4px; 
+}

@@ -1,0 +1,43 @@
+<div nz-row class="login-container">
+  <!-- Left Section -->
+  <div nz-col [nzXs]="0" [nzSm]="0" [nzMd]="12" [nzLg]="10" class="left-section">
+    <img src="../../../assets/login.svg" alt="Left Section Image" class="left-image"/>
+  </div>
+
+  <!-- Right Section -->
+  <div nz-col [nzXs]="24" [nzSm]="24" [nzMd]="12" [nzLg]="10" class="right-section">
+    <img src="../../../assets/logo.png" alt="Logo" class="logo"/>
+    <span class="login-text">Login with password and username</span>
+
+    <form nz-form [nzLayout]="'vertical'" [formGroup]="loginForm" (ngSubmit)="submitForm()">
+      <div nz-row>
+        <nz-form-item nz-col [nzSpan]="24">
+          <nz-form-control nzErrorTip="Please input your username!">
+            <nz-input-group>
+              <input formControlName="UserName" nz-input placeholder="Username" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-row>
+        <nz-form-item nz-col [nzSpan]="24">
+          <nz-form-control nzErrorTip="Please input your Password!">
+            <nz-input-group>
+             
+              <input formControlName="Password" nz-input type="password" placeholder="Password" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-row nzJustify="center">
+        <nz-form-item nz-col [nzSpan]="4">
+          <nz-form-control>
+            <button nz-button nzType="primary">Log in</button>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+  </div>
+</div>

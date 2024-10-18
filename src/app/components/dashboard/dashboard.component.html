@@ -1,0 +1,42 @@
+<nz-layout>
+  <nz-sider nzCollapsible nzWidth="200px">
+      <!-- sidebar -->
+      <div class="nz-sider-content">
+          <h3>Sidebar</h3>
+          <ul>
+              <li>
+                  <a [routerLink]="['/dashboard/login']">
+                      login
+                  </a>
+              </li>
+              <li>
+                  <a [routerLink]="['/dashboard/table']">
+                      Tables
+                  </a>
+              </li>
+              <li>
+                <a [routerLink]="['/dashboard/tags']">
+                    tags
+                </a>
+            </li>
+          </ul>
+      </div>
+  </nz-sider>
+
+  <nz-layout>
+      <nz-header>
+          <!-- header -->
+          <h2>Header</h2>
+      </nz-header>
+      <nz-content>
+          <!-- main content -->
+          <div>
+              <router-outlet></router-outlet>
+          </div>
+      </nz-content>
+      <nz-footer>
+          <!-- Footer -->
+          ©2024 Created by Ibrahim alomar
+      </nz-footer>
+  </nz-layout>
+</nz-layout>
