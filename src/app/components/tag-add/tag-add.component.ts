@@ -6,9 +6,10 @@ import { TagService } from '../../service/tag.service';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { ArrowLeftOutline } from '@ant-design/icons-angular/icons';
 
 @Component({
   selector: 'app-tag-add',
@@ -25,19 +26,21 @@ import { NzMessageService } from 'ng-zorro-antd/message';
  
 })
 export class TagAddComponent {
-
+  isLoading = false;
   addForm!: FormGroup; 
 
   constructor(
     private fb: FormBuilder,
     private tagService: TagService,
     private router: Router,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private iconService: NzIconService
   ) {
-    this.createAddForm();
+    this.initAddForm();
+    this.iconService.addIcon(ArrowLeftOutline);
   }
 
-  createAddForm(): void {
+  initAddForm(): void {
     this.addForm = this.fb.group({
       Name: [''],
 
@@ -46,14 +49,17 @@ export class TagAddComponent {
 
   addTag(): void {
     if(this.addForm.valid){
+    this. isLoading = true;
     const newTag: Tag = this.addForm.value;
     this.tagService.create(newTag).subscribe({
       next: () => {
         this.router.navigate(['dashboard/tags']);
-        this.message.success('adedd tag')
+        this.message.success('adedd tag');
+        this. isLoading = false;
       },
       error: (error) => {
-        console.error('Error adding tag:', error);
+        this.message.error('Error adding tag');
+        this. isLoading = false;
       }
     });
   }else{

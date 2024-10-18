@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TagService } from '../../service/tag.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,9 @@ import { NzAlertModule } from 'ng-zorro-antd/alert';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { DataItem } from '../../modal/Tags/DataItem';
 import { ColumnItem } from '../../modal/Tags/ColumnItem';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
+import { DeleteOutline, DownOutline, EditOutline, FilterOutline, PlusOutline, ReloadOutline } from '@ant-design/icons-angular/icons';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'app-tag',
@@ -33,13 +36,15 @@ import { ColumnItem } from '../../modal/Tags/ColumnItem';
     NzDropDownModule,
     RouterLink,
     NzAlertModule,
-    NzCheckboxModule
+    NzCheckboxModule,
+    NzIconModule,
+    NzGridModule 
   ],
   templateUrl: './tag.component.html',
   styleUrl: './tag.component.css',
 })
 export class TagComponent implements OnInit {
-    
+  selectedColumns:string='';
 currentPage: number = 1;
 pageSize: number = 4;
 totalItems: number = 0;
@@ -56,7 +61,6 @@ listOfColumns: ColumnItem[] = [
   { name: 'ObjectType', checked: true, sortOrder: null, sortFn: (a: DataItem, b: DataItem) => a.ObjectType - b.ObjectType,filterFn: (filter: any, item: DataItem) => filter.includes(item.ObjectType) }
 ];
 
-
 idOptions: number[] = [];
 nameOptions: string[] = [];
 objectTypeOptions: number[] = [];
@@ -69,8 +73,11 @@ selectedObjectType?: number;
 constructor(
   private tagService: TagService,
   private message: NzMessageService,
-  private modal: NzModalService
-) {}
+  private modal: NzModalService,
+  private iconService: NzIconService
+) {
+  this.iconService.addIcon(FilterOutline,PlusOutline,DownOutline,DeleteOutline,EditOutline,ReloadOutline);
+}
 
 ngOnInit(): void {
   this.getAll(); 
@@ -78,16 +85,25 @@ ngOnInit(): void {
 
 
 getAll(): void {
-  const selectedColumns = this.listOfColumns
+  this.selectedColumns = this.listOfColumns
     .filter(col => col.checked)
     .map(col => col.name)
     .join(',');
+   
+    if (!this.selectedColumns) {
+      this.selectedColumns = 'Id,Name,ObjectType'; 
+      this.listOfColumns[0].checked=true;
+      this.listOfColumns[1].checked=true;
+      this.listOfColumns[2].checked=true;
+    }
+  
+
 
   const skip = (this.currentPage - 1) * this.pageSize;
   const top = this.pageSize;
 
   this.tagsSubscription = this.tagService
-    .getAllTags(skip, top, selectedColumns)
+    .getAllTags(skip, top, this.selectedColumns)
     .subscribe({
       next: (response) => {
         this.listOfData = response.value;
@@ -118,6 +134,7 @@ sortChange(column: ColumnItem): void {
   column.sortOrder = column.sortOrder === 'ascend' ? 'descend' : 'ascend';
   this.applySort(column); 
 }
+
 // front End filter list
 applyFilter(): void {
   this.filteredData = this.listOfData.filter(item =>
@@ -135,6 +152,7 @@ setFilterOptions(): void {
 
 
 columnSelectChange(): void {
+  
   this.getAll(); 
 }
 

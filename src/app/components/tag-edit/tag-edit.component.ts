@@ -9,7 +9,8 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { CommonModule } from '@angular/common';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
+import { ArrowLeftOutline, FastBackwardFill } from '@ant-design/icons-angular/icons';
 
 @Component({
   selector: 'app-tag-edit',
@@ -17,7 +18,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
   imports: [ReactiveFormsModule,NzInputModule,NzFormModule,
     NzCardModule,CommonModule,
     NzButtonModule,
-    NzTagModule],
+    NzIconModule],
   templateUrl: './tag-edit.component.html',
   styleUrl: './tag-edit.component.css'
 })
@@ -25,25 +26,37 @@ export class TagEditComponent {
 
   editForm!: FormGroup;
   tagId!: number;
-
+  isLoading:boolean=false;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private tagService: TagService,
     private router: Router,
-    private message: NzMessageService
-    
-  ) { }
-
-  ngOnInit(): void {
-    this.createEditForm();
-    this.tagId = this.route.snapshot.params['id'];
-    this.getTag();
-    console.log('data ',this.tagId);
-    
+    private message: NzMessageService,
+    private iconService: NzIconService
+  ) { 
+    this.iconService.addIcon(ArrowLeftOutline);
   }
 
-  createEditForm(): void {
+  ngOnInit(): void {
+    this.initEditForm();
+    this.fetchTagData()
+    this.getTag();
+   
+    
+  }
+  fetchTagData(): void {
+    this.route.params.subscribe(params => {
+      this.tagId = params['id'];
+      if (!isNaN(this.tagId)) {
+       //log
+        this.getTag(); 
+      } else {
+        this.message.error('Invalid ID.');
+      }
+    });
+  }
+  initEditForm(): void {
     this.editForm = this.fb.group({
       Id: [null],
       Name: [''],
@@ -58,19 +71,22 @@ export class TagEditComponent {
       },
       error:(error)=>{
         console.log('errors');
-        
+        this.message.success('error get data try agin')
       }
     })
   }
 
   updateTag(): void {
     const updatedTag: Tag = this.editForm.value;
+    this.isLoading=true;
     this.tagService.update(updatedTag).subscribe({
       next: () => {
+        this.isLoading=false;
         this.message.success('updated succesfully');
         this.router.navigate(['dashboard/tags']); 
       },
       error: (error) => {
+        this.isLoading=false;
         this.message.error('Failed to update the tag plese try again');
       }
     });

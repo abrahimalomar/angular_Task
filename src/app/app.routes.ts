@@ -22,6 +22,6 @@ export const routes: Routes =
        {path:'tags/add',component:TagAddComponent}
      ]
    },
-   { path: '**', redirectTo: 'login' }
+   { path: '**', redirectTo: 'table' }
   
  ];

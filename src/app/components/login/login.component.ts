@@ -3,10 +3,10 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
-import {  NzIconModule } from 'ng-zorro-antd/icon';
+import {  NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
-import { UserOutline, LockOutline } from '@ant-design/icons-angular/icons';
+import { UserOutline, LockOutline, EyeInvisibleOutline, EyeOutline } from '@ant-design/icons-angular/icons';
 import { AuthService } from '../../service/auth.service';
 import { user } from '../../modal/user';
 import { LoginResponse } from '../../modal/LoginResponse';
@@ -33,19 +33,25 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class LoginComponent implements OnInit{
 
   loginForm!: FormGroup;
+  isPasswordVisible = false;
+  isLoading:boolean=false;
   constructor(private fb: FormBuilder,
     private authService:AuthService,
     private router: Router,
-    private message: NzMessageService) {
-  
+    private message: NzMessageService,
+    private iconService: NzIconService) {
+      this.iconService.addIcon(UserOutline, LockOutline,EyeOutline, EyeInvisibleOutline);
   }
+ 
   ngOnInit(): void {
  
     this.initFormLogin();
     
   }
 
-  
+  togglePasswordVisibility(): void {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
   initFormLogin(){
     this.loginForm = this.fb.group({
       UserName: new FormControl('', [Validators.required]),
@@ -53,24 +59,32 @@ export class LoginComponent implements OnInit{
     });
   }
 
-  submitForm(): void {
-
-    console.log('data ',this.loginForm.value);
-    const userInfo=this.loginForm.value as user
-    this.authService.login(userInfo).subscribe({
-      next:(response:LoginResponse)=>{
-        console.log('res',response);
-        // localStorage.setItem("token", response.token);
-        // localStorage.setItem("refreshToken", response.refreshToken);
-        this.message.success('login successfully')
-        this.router.navigate(['/dashboard/tags'])
-      },
-      error:(error)=>{
-        console.log('error',error);
-        
-      }
-    })
+  login(): void {
+    if (this.authService.isLoggedIn() && !this.authService.isTokenExpired()) {
+      this.message.warning("already loggIn")
+      this.router.navigate(['/dashboard']);
+    }else{
+      console.log('data ',this.loginForm.value);
+      const userInfo=this.loginForm.value as user
+      this.isLoading=true;
+      console.log('isLoading',this.isLoading);
+      
+      this.authService.login(userInfo).subscribe({
+        next:(response:LoginResponse)=>{
+          console.log('res',response);
+          // localStorage.setItem("token", response.token);
+          // localStorage.setItem("refreshToken", response.refreshToken);
+          this.isLoading=false;
+          this.message.success('login successfully')
+          this.router.navigate(['/dashboard/tags'])
+        },
+        error:(error)=>{
+          this.isLoading=false;
+          console.log('error',error);
+          
+        }
+      })
+    }
+   
   }
-
-
 }

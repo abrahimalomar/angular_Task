@@ -47,3 +47,30 @@
     border: 1px solid red; 
     border-radius: 4px; 
   }
+
+  /* التأثير الخاص بالـ Ripple */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple:after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  width: 200%;
+  height: 200%;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s, opacity 1s;
+  opacity: 0;
+}
+
+.ripple:active:after {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  transition: transform 0.1s, opacity 0.3s;
+}

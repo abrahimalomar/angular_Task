@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LoadingService } from './service/loading.service';
@@ -22,13 +22,20 @@ export class AppComponent{
   isLoading = false;  
   private loadingSubscription!: Subscription;
 
-  constructor(public loadingService: LoadingService) {}
+  constructor(public loadingService: LoadingService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadingSubscription = this.loadingService.loading$.subscribe(
-      (loading) => {
-        this.isLoading = loading;
+    {
+      next:(loading)=>{
+          this.isLoading = loading;
+          this.cdr.detectChanges();
+      },
+      error:(error)=>{
+        console.log('error',error);
+        
       }
+    }
     );
   }
 

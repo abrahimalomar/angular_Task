@@ -12,6 +12,7 @@ export class TagService {
 
   constructor(private http:HttpClient) { }
   getAllTags(skip: number, top: number, select: string): Observable<any> {
+
     const apiurl= `${environment.urlApi}/data-api/Tag?select=${select}&count=true&skip=${skip}&top=${top}`
     return this.http.get<any>(apiurl);
   }

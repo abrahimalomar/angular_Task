@@ -1,21 +1,34 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { MenuFoldOutline, MenuUnfoldOutline, FileOutline, ProjectOutline, TagOutline } from '@ant-design/icons-angular/icons';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
+
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-     NzLayoutModule,
     CommonModule,
     FormsModule,
+    RouterModule,
     NzLayoutModule,
-    RouterModule],
+    NzIconModule,
+    NzMenuModule
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent {
+export class DashboardComponent  {
+  isCollapsed = false;
+ 
+
+  constructor(private iconService: NzIconService,    private router: Router,
+    private activatedRoute: ActivatedRoute) {
+    this.iconService.addIcon(...[MenuFoldOutline, MenuUnfoldOutline, ProjectOutline, TagOutline, FileOutline]);
+  }
 
 }

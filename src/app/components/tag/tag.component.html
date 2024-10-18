@@ -3,7 +3,7 @@
   <div class="filters">
   
     <button nz-button nz-dropdown [nzDropdownMenu]="menu">
-      <i nz-icon nzType="filter"></i> Filter by Column
+      <i nz-icon nzType="filter"></i>  Filter by Column
     </button>
 
     <nz-dropdown-menu #menu="nzDropdownMenu">
@@ -37,12 +37,13 @@
      }
     </nz-select>
 
-    <button nz-button (click)="resetFilters()">Reset Filters</button>
+    <button nz-button (click)="resetFilters()">
+      <i nz-icon nzType="reload"></i> Reset Filters</button>
   </div>
 
 
   <button nz-button nzType="primary" [routerLink]="['/dashboard/tags/add']">
-    <i nz-icon nzType="plus" style="margin-right: 4px;"></i> Add New Tag
+    <i nz-icon nzType="plus" ></i> Add New Tag
   </button>
 </div>
 
@@ -89,7 +90,7 @@
               </button>
             </li>
             <li nz-menu-item>
-              <button nz-button nzType="link" (click)="confirmDelete(item.Id, item.Name)">
+              <button nz-button nzType="link" nzDanger  (click)="confirmDelete(item.Id, item.Name)">
                 <i nz-icon nzType="delete"></i> Delete
               </button>
             </li>
@@ -100,6 +101,20 @@
   }
   </tbody>
 </nz-table>
+<nz-row nzJustify="space-between">
+  <nz-col>
+    <span  class="total-count-text">
+      Total Count: {{ totalItems }}
+    </span>
+  </nz-col>
+  
+  <nz-col>
+    <nz-pagination 
+      [(nzPageIndex)]="currentPage" 
+      [nzTotal]="totalItems" 
+      [nzPageSize]="pageSize" 
+      (nzPageIndexChange)="onPageChange($event)">
+    </nz-pagination>
+  </nz-col>
+</nz-row>
 
-<nz-pagination [(nzPageIndex)]="currentPage" [nzTotal]="totalItems" [nzPageSize]="pageSize" (nzPageIndexChange)="onPageChange($event)">
-</nz-pagination>

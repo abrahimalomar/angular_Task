@@ -7,9 +7,7 @@
     <div style="margin-bottom: 24px;">
       <label for="name" class="label-style">Name</label>
       <nz-input-group nzSize="large">
-        <span nz-input-group-addon>
-          <i nz-icon nzType="user" nzTheme="outline"></i>
-        </span>
+       
         <input id="name" formControlName="Name" nz-input placeholder="Enter name" 
         required 
         [ngClass]="{ 'is-invalid': isNameInvalidAndTouched }"/>
@@ -21,8 +19,9 @@
       }
     </div>
 
-    <button nz-button nzType="primary" nzSize="large" nzBlock type="submit" [disabled]="addForm.invalid"
-      class="submit-button">
+    <button nz-button nzType="primary" nzSize="large" nzBlock type="submit" [nzLoading]="isLoading" [disabled]="addForm.invalid"
+
+      class="submit-button ripple">
       <i nz-icon nzType="plus" nzTheme="outline"></i> Add Tag
     </button>
 

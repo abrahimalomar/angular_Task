@@ -10,7 +10,7 @@ import { LoginResponse } from '../modal/LoginResponse';
 export class AuthService {
 
   private url='https://pim.itmd-b1.com/api/api/Authentication/Login';
-  private refreshUrl = 'https://pim.itmd-b1.com/api/api/Authentication/RefreshToken';
+  private refreshUrl = 'https://pim.itmd-b1.com/api/api/Authentication/refreshToken';
   constructor(private http:HttpClient) { }
   private key: string = 'yuioplkjgrewqsdfvcserfhy';
   private IV: string = 'MagB1#V2';
@@ -66,9 +66,10 @@ export class AuthService {
     return this.http.post<LoginResponse>(this.refreshUrl, { refreshToken }).pipe(
       tap(response => {
         console.log("refresh tokn response", response);
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("refreshToken", response.refreshToken);
-        this.scheduleTokenRefresh(response.token);
+        // localStorage.setItem("token", response.token);
+        // localStorage.setItem("refreshToken", response.refreshToken);
+        // this.scheduleTokenRefresh(response.token);
+        this.updateToken(response.token, response.refreshToken);
       }),
       catchError(error => {
         this.logout();
@@ -101,5 +102,29 @@ export class AuthService {
 
     return new Date(payload.exp * 1000);
   }
-  
+  private updateToken(newToken: string, newRefreshToken: string): void {
+    // حذف التوكنات القديمة
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+
+    // تخزين التوكنات الجديدة
+    localStorage.setItem('token', newToken);
+    localStorage.setItem('refreshToken', newRefreshToken);
+
+    // جدولة التحديث القادم بناءً على التوكن الجديد
+    this.scheduleTokenRefresh(newToken);
+  }
+
+
+  // تعديل في AuthService
+isTokenExpired(): boolean {
+  const token = this.getToken();
+  if (!token) return true;
+
+  const expirationDate = this.getTokenExpirationDate(token);
+  if (!expirationDate) return true;
+
+  return expirationDate.getTime() < Date.now(); // إذا انتهت صلاحية التوكن
+}
+
 }
