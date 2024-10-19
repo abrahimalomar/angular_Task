@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AppstoreOutline, SearchOutline, PlusSquareOutline, MinusSquareOutline } from '@ant-design/icons-angular/icons';
 import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
-import { CategoryService, Category } from '../../service/category.service';
+import { CategoryService } from '../../service/category.service';
 import { FormsModule } from '@angular/forms';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import { AddCategoryComponent } from '../add-category/add-category.component';
+import { Category } from '../../modal/Category/category';
 
 @Component({
   selector: 'app-categorys',

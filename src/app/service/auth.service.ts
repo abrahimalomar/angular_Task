@@ -4,13 +4,15 @@ import {  catchError, Observable, tap, throwError } from 'rxjs';
 import * as CryptoJS from 'crypto-js';
 import { user } from '../modal/user';
 import { LoginResponse } from '../modal/LoginResponse';
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private url='https://pim.itmd-b1.com/api/api/Authentication/Login';
-  private refreshUrl = 'https://pim.itmd-b1.com/api/api/Authentication/refreshToken';
+  // private url='https://pim.itmd-b1.com/api/api/Authentication/Login';
+
+  // private refreshUrl = 'https://pim.itmd-b1.com/api/api/Authentication/refreshToken';
   constructor(private http:HttpClient) { }
   private key: string = 'yuioplkjgrewqsdfvcserfhy';
   private IV: string = 'MagB1#V2';
@@ -30,7 +32,7 @@ export class AuthService {
     const encryptedData = { ...data, Password: encryptedPassword };
 
     // return this.http.post<LoginResponse>(this.url, encryptedData);
-    return this.http.post<LoginResponse>(this.url, encryptedData).pipe(
+    return this.http.post<LoginResponse>(`${environment.urlApi}/api/Authentication/Login`, encryptedData).pipe(
       tap(response => {
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
@@ -63,7 +65,7 @@ export class AuthService {
     if (!refreshToken) return throwError("refresh token not available");
 
     console.log("request refresh ");
-    return this.http.post<LoginResponse>(this.refreshUrl, { refreshToken }).pipe(
+    return this.http.post<LoginResponse>(`${environment.urlApi}/api/Authentication/Refresh-Token`, { refreshToken }).pipe(
       tap(response => {
 
         // localStorage.setItem("token", response.token);

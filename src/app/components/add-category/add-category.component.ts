@@ -9,7 +9,8 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
-import { Category, CategoryService } from '../../service/category.service';
+import {  CategoryService } from '../../service/category.service';
+import { Category } from '../../modal/Category/category';
 
 @Component({
   selector: 'app-add-category',
