@@ -60,12 +60,12 @@ export class AuthService {
 
   refreshToken(): Observable<LoginResponse> {
     const refreshToken = localStorage.getItem("refreshToken");
-    if (!refreshToken) return throwError("Refresh token not available");
+    if (!refreshToken) return throwError("refresh token not available");
 
     console.log("request refresh ");
     return this.http.post<LoginResponse>(this.refreshUrl, { refreshToken }).pipe(
       tap(response => {
-        console.log("refresh tokn response", response);
+
         // localStorage.setItem("token", response.token);
         // localStorage.setItem("refreshToken", response.refreshToken);
         // this.scheduleTokenRefresh(response.token);
@@ -86,7 +86,7 @@ export class AuthService {
     if (!expirationDate) return;
 
     const expiresIn = expirationDate.getTime() - Date.now() - 2 * 60 * 1000; 
-    console.log('token expires :', expiresIn);
+    
     if (this.refreshTimeout) clearTimeout(this.refreshTimeout);
 
     if (expiresIn > 0) {
@@ -103,20 +103,20 @@ export class AuthService {
     return new Date(payload.exp * 1000);
   }
   private updateToken(newToken: string, newRefreshToken: string): void {
-    // حذف التوكنات القديمة
+
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
 
-    // تخزين التوكنات الجديدة
+
     localStorage.setItem('token', newToken);
     localStorage.setItem('refreshToken', newRefreshToken);
 
-    // جدولة التحديث القادم بناءً على التوكن الجديد
+  
     this.scheduleTokenRefresh(newToken);
   }
 
 
-  // تعديل في AuthService
+ 
 isTokenExpired(): boolean {
   const token = this.getToken();
   if (!token) return true;
@@ -124,7 +124,7 @@ isTokenExpired(): boolean {
   const expirationDate = this.getTokenExpirationDate(token);
   if (!expirationDate) return true;
 
-  return expirationDate.getTime() < Date.now(); // إذا انتهت صلاحية التوكن
+  return expirationDate.getTime() < Date.now();
 }
 
 }

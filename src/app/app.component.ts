@@ -4,26 +4,29 @@ import { CommonModule } from '@angular/common';
 import { LoadingService } from './service/loading.service';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { Subscription } from 'rxjs';
-
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet,CommonModule,
-    NzSpinModule,
-  
+  imports: [RouterOutlet,CommonModule,NzSpinModule,
+    NzGridModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent{
   title = 'angularTask';
+  inputValue: string = '';
   // constructor(public loadingService: LoadingService) {}
   isLoading = false;  
   private loadingSubscription!: Subscription;
 
-  constructor(public loadingService: LoadingService, private cdr: ChangeDetectorRef) {}
+  constructor(public loadingService: LoadingService, 
+    private cdr: ChangeDetectorRef) {
 
+    }
+ 
   ngOnInit(): void {
     this.loadingSubscription = this.loadingService.loading$.subscribe(
     {

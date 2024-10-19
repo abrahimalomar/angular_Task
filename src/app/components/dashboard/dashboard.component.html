@@ -14,15 +14,29 @@
                    Add tags
                 </a>
             </li>
-            
+            <li nz-menu-item>
+              <a [routerLink]="['/dashboard/test']">test </a>
+            </li>
           </ul>
         </li>
         <li nz-submenu nzTitle="Project" nzIcon="project">
           <ul>
             <li nz-menu-item>Projects</li>
             <li nz-menu-item>Add Project</li>
+            <li nz-menu-item>
+              <a [routerLink]="['/dashboard/addCategory']">addCategory</a>
+            </li>
           </ul>
         </li>
+        <li nz-submenu nzTitle="categorys" nzIcon="appstore">
+          <ul>
+          
+            <li nz-menu-item>
+              <a [routerLink]="['/dashboard/categorys']">categorys</a>
+            </li>
+          </ul>
+        </li>
+       
         <li nz-menu-item>
           <span nz-icon nzType="file"></span>
           <span>File</span>
@@ -41,8 +55,8 @@
       </nz-header>
       <nz-content>
         <!-- <nz-breadcrumb>
-          <nz-breadcrumb-item>User</nz-breadcrumb-item>
-          <nz-breadcrumb-item>Bill</nz-breadcrumb-item>
+          <nz-breadcrumb-item>Tag</nz-breadcrumb-item>
+          <nz-breadcrumb-item>project</nz-breadcrumb-item>
         </nz-breadcrumb> -->
      <p></p>
           
@@ -51,7 +65,7 @@
             <router-outlet></router-outlet>
         </div>
       </nz-content>
-      <nz-footer>Ant Design ©2020 Implement By Angular</nz-footer>
+      <nz-footer>Ant Design ©2020 Ibrahim alomar</nz-footer>
     </nz-layout>
   </nz-layout>
   

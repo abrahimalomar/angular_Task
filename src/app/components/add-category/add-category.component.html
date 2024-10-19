@@ -1,0 +1,88 @@
+<nz-steps [nzCurrent]="current">
+    <nz-step nzTitle="Information"></nz-step>
+    <nz-step nzTitle="Translations"></nz-step>
+    <nz-step nzTitle="Attributes"></nz-step>
+    <nz-step nzTitle="Related Products"></nz-step>
+</nz-steps>
+
+<div class="steps-content">
+    @if(current === 0){
+    <ng-container>
+
+        <form [formGroup]="addCategoryForm" (ngSubmit)="addCategory()" style="max-width: 500px; margin: 0 auto;">
+
+
+            <div style="margin-bottom: 24px;">
+                <nz-input-group nzSize="large">
+                    <input formControlName="categoryName" nz-input placeholder="Enter category name" required
+                        [ngClass]="{ 'is-invalid': isCategoryNameInvalidAndTouched }"
+                        style="height: 30px;width: 100%;" />
+                </nz-input-group>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <nz-select nzMode="multiple" nzPlaceHolder="Select Cloned Categories" formControlName="clonedCategories"
+                    [nzOptions]="options" style="width: 100%; height: 30px;">
+                </nz-select>
+            </div>
+
+            @if(isCategoryNameInvalidAndTouched || isClonedCategorieInvalidAndTouched){
+            <div class="error">
+                @if(isCategoryNameInvalidAndTouched){
+                <span>Category name is required</span>
+                }
+                @if(isClonedCategorieInvalidAndTouched){
+                <span>Please select at least one Cloned Categories</span>
+                }
+            </div>
+            }
+
+
+            <div style="margin-top: 20px;margin-bottom: 10px; text-align: center;">
+                <button nz-button nzType="primary" nzSize="default" type="submit" [nzLoading]="isLoading"
+                    [disabled]="addCategoryForm.invalid" class="submit-button ripple">
+                    <i nz-icon nzType="plus" nzTheme="outline"></i> Add Category
+                </button>
+            </div>
+
+        </form>
+
+    </ng-container>
+    }
+
+
+
+    @if(current === 1){
+    <ng-container>
+        <h3>Step 2</h3>
+    </ng-container>
+    }
+    @if(current === 2){
+    <ng-container>
+        <h3>Step 3</h3>
+    </ng-container>
+    }
+    @if(current === 3){
+    <ng-container>
+        <h3>Step 4</h3>
+    </ng-container>
+    }
+</div>
+
+<div class="steps-action">
+    @if(current > 0){
+    <button nz-button nzType="default" (click)="pre()">
+        <span>Previous</span>
+    </button>
+    }
+    @if(current <3 ){ <button nz-button nzType="default" (click)="next()">
+        <span>Next</span>
+        </button>
+        }
+        @if(current ===3){
+
+        <button nz-button nzType="primary" (click)="done()">
+            <span>Done</span>
+        </button>
+        }
+</div>

@@ -1,0 +1,46 @@
+<div nz-row [nzGutter]="16">
+
+    <div nz-col [nzXs]="10" [nzSm]="24" [nzMd]="8"> 
+      <div class="container-scroll" style="max-height: 500px; overflow-y: auto;">
+        <div class="category-page">
+          <h2><i nz-icon nzType="appstore" nzTheme="outline"></i> Categories</h2>
+  
+          <div class="actions">
+            <button nz-button nzType="primary" (click)="toggleAddCategory()">
+              <i nz-icon nzType="plus-square" nzTheme="outline"></i>
+              Add Root category
+            </button>
+            <button nz-button nzType="default" disabled>
+              <i nz-icon nzType="minus-square" nzTheme="outline"></i>
+              Add Sub-category
+            </button>
+          </div>
+  
+          <nz-input-group [nzSuffix]="suffixIcon">
+            <input nz-input placeholder="Search" [(ngModel)]="searchValue" />
+          </nz-input-group>
+          <ng-template #suffixIcon>
+            <i nz-icon nzType="search" nzTheme="outline"></i>
+          </ng-template>
+  
+          <nz-tree
+            [nzData]="nodes"
+            nzShowExpand
+            nzShowLine
+            nzDefaultExpandAll
+            nzShowIcon
+            [nzSearchValue]="searchValue"
+            nzBlockNode
+          ></nz-tree>
+        </div>
+      </div>
+    </div>
+  
+    <div nz-col [nzXs]="23" [nzSm]="24" [nzMd]="16" style="margin-top:80px;"> 
+        @if(showAddCategory){
+            <app-add-category></app-add-category>
+        }
+   
+    </div>
+  </div>
+  

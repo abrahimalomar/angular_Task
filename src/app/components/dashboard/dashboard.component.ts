@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuFoldOutline, MenuUnfoldOutline, FileOutline, ProjectOutline, TagOutline } from '@ant-design/icons-angular/icons';
+import { MenuFoldOutline, MenuUnfoldOutline, FileOutline, ProjectOutline, TagOutline, AppstoreOutline } from '@ant-design/icons-angular/icons';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzIconModule, NzIconService } from 'ng-zorro-antd/icon';
 import { CommonModule } from '@angular/common';
@@ -28,7 +28,7 @@ export class DashboardComponent  {
 
   constructor(private iconService: NzIconService,    private router: Router,
     private activatedRoute: ActivatedRoute) {
-    this.iconService.addIcon(...[MenuFoldOutline, MenuUnfoldOutline, ProjectOutline, TagOutline, FileOutline]);
+    this.iconService.addIcon(...[MenuFoldOutline, MenuUnfoldOutline,AppstoreOutline, ProjectOutline, TagOutline, FileOutline]);
   }
 
 }
